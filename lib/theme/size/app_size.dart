@@ -1,0 +1,63 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+abstract class AppSize {
+  static double r8 = 8.0.r;
+  static double r10 = 10.0.r;
+  static double r12 = 12.0.r;
+  static double r16 = 16.0.r;
+  static double r20 = 20.0.r;
+
+  static double h5 = 5.0.h;
+  static double h6 = 6.0.h;
+  static double h10 = 10.0.h;
+  static double h15 = 15.0.h;
+  static double h18 = 18.0.h;
+  static double h20 = 20.0.h;
+  static double h22 = 22.0.h;
+  static double h24 = 24.0.h;
+  static double h25 = 25.0.h;
+  static double h30 = 30.0.h;
+  static double h35 = 35.0.h;
+  static double h40 = 40.0.h;
+  static double h44 = 44.0.h;
+  static double h50 = 50.0.h;
+  static double h65 = 65.0.h;
+  static double h70 = 70.0.h;
+  static double h100 = 100.0.h;
+  static double h145 = 145.0.h;
+  static double h150 = 150.0.h;
+  static double h163 = 163.0.h;
+  static double h165 = 165.0.h;
+  static double h175 = 175.0.h;
+  static double h181 = 181.0.h;
+  static double h195 = 195.0.h;
+  static double h203 = 203.0.h;
+  static double h206 = 206.0.h;
+  static double h220 = 220.0.h;
+  static double h233 = 233.0.h;
+  static double h242 = 242.0.h;
+
+  static double w5 = 5.0.w;
+  static double w10 = 10.0.w;
+  static double w18 = 18.0.w;
+  static double w22 = 22.0.w;
+  static double w24 = 24.0.w;
+  static double w44 = 44.0.w;
+  static double w60 = 60.0.w;
+  static double w65 = 65.0.w;
+  static double w70 = 70.0.w;
+  static double w98 = 98.0.w;
+  static double w100 = 100.0.w;
+  static double w150 = 150.0.w;
+  static double w175 = 175.0.w;
+  static double w205 = 205.0.w;
+  static double w215 = 215.0.w;
+  static double w228 = 228.0.w;
+  static double w242 = 242.0.w;
+  static double w262 = 262.0.w;
+  static double w285 = 285.0.w;
+  static double w286 = 286.0.w;
+  static double w288 = 288.0.w;
+  static double w294 = 294.0.w;
+  static double w350 = 350.0.w;
+}
