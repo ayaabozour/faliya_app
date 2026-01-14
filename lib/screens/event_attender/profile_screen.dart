@@ -56,9 +56,10 @@ class AttenderProfileScreenState extends State<AttenderProfileScreen> {
                       shape: BoxShape.circle,
                       color: Theme.of(
                         context,
-                      ).colorScheme.surfaceContainerHighest,
+                      ).colorScheme.onSurface.withValues(alpha: 0.2),
                       image: const DecorationImage(
-                        image: NetworkImage('https://i.pravatar.cc/300'),
+                        image: NetworkImage(''),
+
                         fit: BoxFit.cover,
                       ),
                     ),

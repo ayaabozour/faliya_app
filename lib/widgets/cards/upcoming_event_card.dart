@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_app/screens/event_attender/event_details_screen.dart';
+import 'package:show_up_app/widgets/buttons/primary_button.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key});
@@ -9,7 +10,7 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -22,20 +23,20 @@ class EventCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildEventImage(),
+          buildEventImage(),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDateRow(),
+                buildDateRow(),
                 const SizedBox(height: 8),
                 const Text(
                   'Design Conference 2026',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 6),
-                _buildManagerRow(),
+                buildManagerRow(),
                 const SizedBox(height: 12),
                 const Text(
                   'Join industry leaders to explore the future of design, UX, and creativity.',
@@ -46,7 +47,15 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _buildEnrollButton(context),
+                PrimaryButton(
+                  text: 'View details',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (_) => EventDetailsScreen()),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -55,7 +64,7 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  Widget _buildEventImage() {
+  Widget buildEventImage() {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: Image.network(
@@ -67,7 +76,7 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDateRow() {
+  Widget buildDateRow() {
     return Row(
       children: const [
         Icon(Icons.calendar_month, size: 16, color: Colors.grey),
@@ -80,46 +89,21 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  Widget _buildManagerRow() {
+  Widget buildManagerRow() {
     return Row(
-      children: [
-        const CircleAvatar(
+      children: const [
+        CircleAvatar(
           radius: 14,
           backgroundImage: NetworkImage(
             'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d',
           ),
         ),
-        const SizedBox(width: 8),
-        const Text(
+        SizedBox(width: 8),
+        Text(
           'Hosted by Sarah Johnson',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ],
-    );
-  }
-
-  Widget _buildEnrollButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 46,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute(builder: (_) => EventDetailsScreen()),
-          );
-        },
-        child: const Text(
-          'View details',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }

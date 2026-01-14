@@ -7,6 +7,7 @@ import 'package:show_up_app/providers/base_provider.dart';
 import 'package:show_up_app/providers/bottom_nav_provider.dart';
 import 'package:show_up_app/providers/discover_provider.dart';
 import 'package:show_up_app/providers/event_owner_provider.dart';
+import 'package:show_up_app/providers/my_events_provider.dart';
 import 'package:show_up_app/providers/onboarding_provider.dart';
 import 'package:show_up_app/providers/shared_prefs_provider.dart';
 import 'package:show_up_app/providers/theme_provider.dart';
@@ -48,7 +49,10 @@ class AppWidget extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => AttendanceProvider()),
             ChangeNotifierProvider(create: (_) => OnboardingProvider()),
             ChangeNotifierProvider(create: (_) => SelectAccountTypeProvider()),
-             ChangeNotifierProvider(create: (_) => BottomNavProvider()),
+            ChangeNotifierProvider(create: (_) => BottomNavProvider()),
+            ChangeNotifierProvider(
+              create: (_) => MyEventsProvider()..loadEvents(),
+            ),
           ],
           child: Consumer<ThemeProvider>(
             builder: (context, themeProvider, _) {

@@ -57,7 +57,7 @@ class _ManagerBottomNavState extends State<ManagerBottomNav> {
   }
 }
 
-final _managerScreens = [ManagerEventsScreen(), EventOwnerProfileScreen()];
+final _managerScreens = [ManagerEventScreen(), EventOwnerProfileScreen()];
 
 class _ManagerNavItem extends StatelessWidget {
   final IconData icon;
