@@ -4,6 +4,8 @@ import 'package:show_up_app/providers/base_provider.dart';
 class MyEventsProvider extends BaseProvider {
   List<Map<String, dynamic>> events = [];
 
+  MyEventsProvider(super.api);
+
   void loadEvents() async {
     setLoading(true);
 

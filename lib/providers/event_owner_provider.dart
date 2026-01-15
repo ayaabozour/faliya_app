@@ -35,4 +35,6 @@ class EventOwnerProvider extends BaseProvider {
       'attendees': 95,
     },
   ];
+
+  EventOwnerProvider(super.api);
 }

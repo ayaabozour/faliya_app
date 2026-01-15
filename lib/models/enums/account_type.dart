@@ -7,17 +7,17 @@ extension AccountTypeExtension on AccountType {
   String get value {
     switch (this) {
       case AccountType.owner:
-        return 'fixed_income';
+        return 'organizer';
       case AccountType.attender:
-        return 'irregular_income';
+        return 'attendee';
     }
   }
 
   static AccountType fromValue(String value) {
     switch (value) {
-      case 'fixed_income':
+      case 'organizer':
         return AccountType.owner;
-      case 'irregular_income':
+      case 'attendee':
         return AccountType.attender;
       default:
         return AccountType.owner;

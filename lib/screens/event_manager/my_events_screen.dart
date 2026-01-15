@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:show_up_app/widgets/buttons/custom_back_button.dart';
 import 'package:show_up_app/widgets/cards/upcoming_event_card.dart';
@@ -25,11 +26,14 @@ class ManagerEventScreen extends StatelessWidget {
         builder: (context, provider, _) {
           return Skeletonizer(
             enabled: provider.isLoading,
-            child: ListView.builder(
+            child: ListView.separated(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
               itemCount: provider.events.length,
               itemBuilder: (context, index) {
                 return EventCard();
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 15.h);
               },
             ),
           );

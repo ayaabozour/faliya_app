@@ -2,68 +2,113 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:show_up_app/providers/attendence_provider.dart';
-import 'package:show_up_app/providers/auth_provider.dart';
-import 'package:show_up_app/providers/base_provider.dart';
-import 'package:show_up_app/providers/bottom_nav_provider.dart';
-import 'package:show_up_app/providers/discover_provider.dart';
-import 'package:show_up_app/providers/event_owner_provider.dart';
-import 'package:show_up_app/providers/my_events_provider.dart';
-import 'package:show_up_app/providers/onboarding_provider.dart';
-import 'package:show_up_app/providers/shared_prefs_provider.dart';
-import 'package:show_up_app/providers/theme_provider.dart';
-import 'package:show_up_app/providers/user_type_provider.dart';
-import 'package:show_up_app/screens/onboarding_screens/splash_screen.dart';
-import 'package:show_up_app/theme/app_theme.dart';
+import 'package:show_up_app/providers/profile_provider.dart';
+import 'services/network/dio_factory.dart';
+import 'services/network/api_client.dart';
+import 'services/network/api_service.dart';
+import 'providers/shared_prefs_provider.dart';
+import 'providers/base_provider.dart';
+import 'providers/theme_provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/onboarding_provider.dart';
+import 'providers/my_events_provider.dart';
+import 'providers/discover_provider.dart';
+import 'providers/event_owner_provider.dart';
+import 'providers/bottom_nav_provider.dart';
+import 'providers/user_type_provider.dart';
+import 'screens/onboarding_screens/splash_screen.dart';
+import 'theme/app_theme.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
-      splitScreenMode: true,
       builder: (_, __) {
         return MultiProvider(
           providers: [
-            ChangeNotifierProvider(
-              create: (_) => SharedPrefsProvider()..initPrefs(),
+            Provider(create: (_) => ApiClient(DioFactory.create())),
+            Provider(
+              create: (context) => ApiService(context.read<ApiClient>()),
             ),
-            ChangeNotifierProvider(create: (_) => BaseProvider()),
+            ChangeNotifierProvider.value(value: SharedPrefsProvider.instance),
+
+            ChangeNotifierProxyProvider<ApiService, BaseProvider>(
+              create: (context) => BaseProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
             ChangeNotifierProxyProvider<SharedPrefsProvider, ThemeProvider>(
-              create: (context) => ThemeProvider(
-                sharedPrefs: context.read<SharedPrefsProvider>(),
-              ),
-              update: (_, sharedPrefs, themeProvider) =>
-                  themeProvider!..sharedPrefs,
+              create: (context) => ThemeProvider(SharedPrefsProvider.instance),
+              update: (_, __, provider) => provider!,
             ),
+
             ChangeNotifierProxyProvider<SharedPrefsProvider, AuthProvider>(
-              create: (context) => AuthProvider(
-                sharedPrefs: context.read<SharedPrefsProvider>(),
-              ),
-              update: (_, sharedPrefs, authProvider) =>
-                  authProvider!..checkAuthStatus(),
+              create: (context) => AuthProvider(context.read<ApiService>()),
+              update: (_, __, provider) {
+                provider!.checkAuthStatus();
+                return provider;
+              },
             ),
-            ChangeNotifierProvider(create: (_) => DiscoverProvider()),
-            ChangeNotifierProvider(create: (_) => EventOwnerProvider()),
-            ChangeNotifierProvider(create: (_) => AttendanceProvider()),
-            ChangeNotifierProvider(create: (_) => OnboardingProvider()),
-            ChangeNotifierProvider(create: (_) => SelectAccountTypeProvider()),
-            ChangeNotifierProvider(create: (_) => BottomNavProvider()),
-            ChangeNotifierProvider(
-              create: (_) => MyEventsProvider()..loadEvents(),
+
+            ChangeNotifierProxyProvider<ApiService, OnboardingProvider>(
+              create: (context) =>
+                  OnboardingProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, SelectAccountTypeProvider>(
+              create: (context) =>
+                  SelectAccountTypeProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, MyEventsProvider>(
+              create: (context) =>
+                  MyEventsProvider(context.read<ApiService>())..loadEvents(),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, DiscoverProvider>(
+              create: (context) => DiscoverProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, EventOwnerProvider>(
+              create: (context) =>
+                  EventOwnerProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, AttendanceProvider>(
+              create: (context) =>
+                  AttendanceProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+
+            ChangeNotifierProxyProvider<ApiService, BottomNavProvider>(
+              create: (context) =>
+                  BottomNavProvider(context.read<ApiService>()),
+              update: (_, __, provider) => provider!,
+            ),
+            ChangeNotifierProxyProvider<ApiService, ProfileProvider>(
+              create: (context) => ProfileProvider(context.read<ApiService>()),
+              update: (_, __, provider) {
+                provider!.loadOwnerProfile();
+                return provider;
+              },
             ),
           ],
           child: Consumer<ThemeProvider>(
-            builder: (context, themeProvider, _) {
+            builder: (context, theme, _) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: 'Faliya',
                 theme: AppTheme.instance.lightTheme,
                 darkTheme: AppTheme.instance.darkTheme,
-                themeMode: themeProvider.isDarkMode
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
+                themeMode: theme.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                 home: const SplashScreen(),
               );
             },

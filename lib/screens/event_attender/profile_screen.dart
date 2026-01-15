@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:show_up_app/helpers/validators/validator.dart';
+import 'package:show_up_app/providers/auth_provider.dart';
+import 'package:show_up_app/screens/auth_screens/choose_user_type_screen.dart';
+import 'package:show_up_app/theme/color/color_manager.dart';
 import 'package:show_up_app/theme/size/app_size.dart';
 import 'package:show_up_app/widgets/buttons/custom_back_button.dart';
 import 'package:show_up_app/widgets/buttons/primary_button.dart';
@@ -38,6 +43,27 @@ class AttenderProfileScreenState extends State<AttenderProfileScreen> {
         ),
         centerTitle: true,
         leading: CustomBackButton(),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: ColorManager.instance.error,
+            ),
+            tooltip: 'Logout',
+            onPressed: () async {
+              final authProvider = context.read<AuthProvider>();
+              await authProvider.logout();
+
+              if (!context.mounted) return;
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                CupertinoPageRoute(builder: (_) => ChooseUserTypeScreen()),
+                (route) => false,
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(AppSize.w24),

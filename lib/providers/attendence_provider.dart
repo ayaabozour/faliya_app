@@ -38,6 +38,8 @@ class AttendanceProvider extends BaseProvider {
     },
   ];
 
+  AttendanceProvider(super.api);
+
   void acceptAttendee(int index) {
     final attendee = pendingAttendees.removeAt(index);
     acceptedAttendees.add(attendee);

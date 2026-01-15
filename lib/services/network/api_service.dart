@@ -4,5 +4,5 @@ import 'dio_factory.dart';
 class ApiService {
   final ApiClient client;
 
-  ApiService() : client = ApiClient(DioFactory.create());
+  ApiService(ApiClient read) : client = ApiClient(DioFactory.create());
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:show_up_app/providers/shared_prefs_provider.dart';
+import 'shared_prefs_provider.dart';
 
-class ThemeProvider with ChangeNotifier {
-  final SharedPrefsProvider sharedPrefs;
+class ThemeProvider extends ChangeNotifier {
+  final SharedPrefsProvider prefs;
 
-  ThemeProvider({required this.sharedPrefs});
+  ThemeProvider(this.prefs);
 
-  bool get isDarkMode => sharedPrefs.isDarkMode;
+  bool get isDarkMode => prefs.isDarkMode;
 
-  void toggleTheme() {
-    sharedPrefs.setDarkMode(!isDarkMode);
+  Future<void> toggleTheme() async {
+    await prefs.setDarkMode(!isDarkMode);
     notifyListeners();
   }
 }

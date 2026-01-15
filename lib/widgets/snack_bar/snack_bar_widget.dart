@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:show_up_app/theme/color/color_manager.dart';
 
 class SnackBarWidget {
@@ -14,9 +13,8 @@ class SnackBarWidget {
         content: Text(
           message,
           maxLines: 4,
-          style: TextStyle(
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Colors.white,
-            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
           ),
         ),

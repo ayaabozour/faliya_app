@@ -15,42 +15,39 @@ class AttenderBottomNav extends StatefulWidget {
 class _AttenderBottomNavState extends State<AttenderBottomNav> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BottomNavProvider(),
-      child: Consumer<BottomNavProvider>(
-        builder: (context, provider, _) {
-          return Scaffold(
-            body: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: _screens[provider.currentIndex],
+    return Consumer<BottomNavProvider>(
+      builder: (context, provider, _) {
+        return Scaffold(
+          body: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _screens[provider.currentIndex],
+          ),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 20,
+                  color: Colors.black.withValues(alpha: 0.08),
+                ),
+              ],
             ),
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 20,
-                    color: Colors.black.withValues(alpha: 0.08),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(
-                  3,
-                  (index) => _NavItem(
-                    icon: _icons[index],
-                    label: _labels[index],
-                    isSelected: provider.currentIndex == index,
-                    onTap: () => provider.changeIndex(index),
-                  ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                3,
+                (index) => _NavItem(
+                  icon: _icons[index],
+                  label: _labels[index],
+                  isSelected: provider.currentIndex == index,
+                  onTap: () => provider.changeIndex(index),
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

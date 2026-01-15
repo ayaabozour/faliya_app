@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:show_up_app/widgets/buttons/custom_back_button.dart';
+import 'package:show_up_app/widgets/buttons/primary_button.dart';
 
 class EventDetailsScreen extends StatefulWidget {
   const EventDetailsScreen({super.key});
@@ -37,6 +38,9 @@ class EventDetailsScreenState extends State<EventDetailsScreen> {
                   Image.network(
                         'https://images.unsplash.com/photo-1503428593586-e225b39bddfe',
                         fit: BoxFit.cover,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.1),
                       )
                       .animate()
                       .fadeIn(duration: 600.ms)
@@ -112,7 +116,7 @@ class EventDetailsScreenState extends State<EventDetailsScreen> {
                         '• Day 3: Design Leadership',
                         style: Theme.of(
                           context,
-                        ).textTheme.bodyMedium?.copyWith(height: 1.6),
+                        ).textTheme.bodySmall?.copyWith(height: 1.6),
                       ).animate().fadeIn(delay: 450.ms).slideY(begin: 0.1),
                       const SizedBox(height: 24),
                       Row(
@@ -149,7 +153,7 @@ class EventDetailsScreenState extends State<EventDetailsScreen> {
                           overflow: TextOverflow.fade,
                           style: Theme.of(
                             context,
-                          ).textTheme.bodyMedium?.copyWith(height: 1.6),
+                          ).textTheme.bodySmall?.copyWith(height: 1.6),
                         ),
                       ).animate().fadeIn(delay: 550.ms),
                       const SizedBox(height: 24),
@@ -166,35 +170,17 @@ class EventDetailsScreenState extends State<EventDetailsScreen> {
                         '• Career growth insights',
                         style: Theme.of(
                           context,
-                        ).textTheme.bodyMedium?.copyWith(height: 1.6),
+                        ).textTheme.bodySmall?.copyWith(height: 1.6),
                       ).animate().fadeIn(delay: 650.ms).slideY(begin: 0.1),
                       const SizedBox(height: 34),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 52,
-                        child:
-                            ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Enroll Now',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                                .animate()
-                                .fadeIn(delay: 750.ms)
-                                .scale(begin: const Offset(0.96, 0.96)),
-                      ),
+                      PrimaryButton(
+                            text: "Enroll now",
+                            isLoading: false,
+                            onPressed: () {},
+                          )
+                          .animate()
+                          .fadeIn(delay: 750.ms)
+                          .scale(begin: const Offset(0.96, 0.96)),
                     ],
                   ),
                 ),

@@ -5,6 +5,8 @@ class OnboardingProvider extends BaseProvider {
   final PageController pageController = PageController();
   int currentIndex = 0;
 
+  OnboardingProvider(super.api);
+
   void onPageChanged(int index) {
     currentIndex = index;
     notifyListeners();

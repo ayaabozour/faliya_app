@@ -1,35 +1,29 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import '../services/network/api_service.dart';
 
-class BaseProvider with ChangeNotifier {
-  final ApiService apiService = ApiService();
+class BaseProvider extends ChangeNotifier {
+  final ApiService api;
+
+  BaseProvider(this.api);
 
   bool isLoading = false;
-  bool failed = false;
-  String? errorMessage;
+  String? error;
 
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
   }
 
-  void setFailed(bool value, {String? message}) {
-    failed = value;
-    errorMessage = message;
-    notifyListeners();
-  }
-
-  void clearError() {
-    failed = false;
-    errorMessage = null;
+  void setError(String? message) {
+    error = message;
     notifyListeners();
   }
 
   Future<bool> hasInternet() async {
     try {
       final result = await InternetAddress.lookup('google.com');
-      return result.isNotEmpty && result.first.rawAddress.isNotEmpty;
+      return result.isNotEmpty;
     } catch (_) {
       return false;
     }

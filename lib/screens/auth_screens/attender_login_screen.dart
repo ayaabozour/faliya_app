@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:show_up_app/helpers/validators/validator.dart';
+import 'package:show_up_app/models/enums/account_type.dart';
+import 'package:show_up_app/models/enums/auth_status.dart';
+import 'package:show_up_app/providers/auth_provider.dart';
 import 'package:show_up_app/screens/place_holder.dart';
 import 'package:show_up_app/theme/size/app_size.dart';
 import 'package:show_up_app/widgets/buttons/primary_button.dart';
 import 'package:show_up_app/widgets/input/custom_text_field.dart';
+import 'package:show_up_app/widgets/snack_bar/snack_bar_widget.dart';
 
 class AttenderLoginScreen extends StatefulWidget {
   const AttenderLoginScreen({super.key});
@@ -22,6 +27,7 @@ class _LoginScreenState extends State<AttenderLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -88,16 +94,38 @@ class _LoginScreenState extends State<AttenderLoginScreen> {
                 //TODO: handle this one too
                 SizedBox(height: AppSize.h24),
                 PrimaryButton(
-                  text: 'Login',
-                  isLoading: false,
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => HomePlaceholderScreen(),
-                      ),
-                    );
-                  },
+                  text: authProvider.isLoading ? 'Logging in...' : 'Login',
+                  isLoading: authProvider.isLoading,
+                  onPressed: authProvider.isLoading
+                      ? null
+                      : () async {
+                          if (!formKey.currentState!.validate()) return;
+
+                          await authProvider.attendeeLogin(
+                            username: usernameController.text.trim(),
+                            password: passwordController.text.trim(),
+                            type: AccountType.owner,
+                          );
+
+                          if (!context.mounted) return;
+
+                          if (authProvider.status ==
+                              AuthStatus.authenticatedManager) {
+                            Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) => const HomePlaceholderScreen(),
+                              ),
+                            );
+                          } else {
+                            SnackBarWidget.errorSnackBar(
+                              context,
+                              message:
+                                  authProvider.error ??
+                                  'Login failed. Please try again.',
+                            );
+                          }
+                        },
                 ),
                 SizedBox(height: AppSize.h24),
                 Row(

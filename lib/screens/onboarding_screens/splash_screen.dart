@@ -22,37 +22,39 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigateAfterDelay() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
 
     final auth = context.read<AuthProvider>();
 
+    auth.checkAuthStatus();
+
+    if (!mounted) return;
+
+    Widget nextScreen;
+
     switch (auth.status) {
       case AuthStatus.firstOpen:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-        );
+        nextScreen = const OnboardingScreen();
         break;
       case AuthStatus.unauthenticated:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const ChooseUserTypeScreen()),
-        );
+        nextScreen = const ChooseUserTypeScreen();
         break;
       case AuthStatus.authenticatedUser:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePlaceholderScreen()),
-        );
-        break;
       case AuthStatus.authenticatedManager:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomePlaceholderScreen()),
-        );
+        nextScreen = const HomePlaceholderScreen();
         break;
     }
+
+    Navigator.of(context).pushAndRemoveUntil(
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => nextScreen,
+        transitionDuration: const Duration(milliseconds: 400),
+        transitionsBuilder: (_, anim, __, child) =>
+            FadeTransition(opacity: anim, child: child),
+      ),
+      (route) => false,
+    );
   }
 
   @override
@@ -63,18 +65,12 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-                  //TODO: edit the logo here
-                  'assets/images/logo.png',
-                  width: 150,
-                  height: 150,
-                )
+            Image.asset('assets/images/logo.png', width: 150, height: 150)
                 .animate()
                 .scale(
-                  begin: Offset(0.8, 0.8),
-                  end: Offset(1.0, 1.0),
+                  begin: const Offset(0.8, 0.8),
+                  end: const Offset(1, 1),
                   duration: 1500.ms,
-                  curve: Curves.easeInOut,
                 )
                 .fade(duration: 1500.ms),
             const SizedBox(height: 20),
@@ -90,9 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   begin: const Offset(0, 1),
                   end: const Offset(0, 0),
                   duration: 1200.ms,
-                  curve: Curves.easeOut,
                 )
-                .fade(duration: 1200.ms, curve: Curves.easeIn),
+                .fade(duration: 1200.ms),
           ],
         ),
       ),

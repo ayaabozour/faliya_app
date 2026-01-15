@@ -1,39 +1,10 @@
-import 'package:show_up_app/models/enums/token_type.dart';
-import 'package:show_up_app/providers/shared_prefs_provider.dart';
-
 abstract class NetworkConstants {
-  //TODO: add base url
-  static const baseUrl = "";
+  static const baseUrl = "https://faliyati-api-production.up.railway.app/";
 
-  static const login = "login";
-  static const register = "register";
-  static const logout = "logout";
-  static const getProfile = "profile";
-
-  static Map<String, String> headers(TokenType token) {
-    final auth = 'Bearer ${SharedPrefsProvider.tokenKey}'; 
-    //TODO: make sure of it and convert it into private
-
-    switch (token) {
-      case TokenType.contentType:
-        return {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': auth,
-        };
-
-      case TokenType.multipart:
-        return {
-          'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
-          'Authorization': auth,
-        };
-
-      default:
-        return {
-          'Accept': 'application/json',
-          'Authorization': auth,
-        };
-    }
-  }
+  static const ownerLogin = "api/v1/auth/owner/login";
+  static const attendeeLogin = "api/v1/auth/attendee/login";
+  static const register = "/register";
+  static const logout = "/logout";
+  static const ownerProfile = "api/v1/owner/me";
+  static const ownerRefresh = "api/v1/owner/refresh";
 }

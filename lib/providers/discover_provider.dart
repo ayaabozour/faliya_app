@@ -26,7 +26,7 @@ class DiscoverProvider extends BaseProvider {
 
   List<int> upcomingEvents = [];
 
-  DiscoverProvider() {
+  DiscoverProvider(super.api) {
     init();
   }
 

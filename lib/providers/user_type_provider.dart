@@ -5,6 +5,8 @@ import 'package:show_up_app/providers/shared_prefs_provider.dart';
 class SelectAccountTypeProvider extends BaseProvider {
   AccountType? selectedType;
 
+  SelectAccountTypeProvider(super.api);
+
   void selectType(AccountType type) {
     selectedType = type;
     notifyListeners();
